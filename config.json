@@ -1,11 +1,11 @@
 {  
     "configuration":{  
         "module":[  
-            "climat_rack"
+            "METEOMK1-*****"
         ],
         "mesures":[  
             {  
-                "captor":"temperature_rack",
+                "captor":"temperature",
                 "unit":"C",
                 "resolution":"0.1",
                 "threshold":{  
@@ -20,7 +20,7 @@
                 }
             },
             {  
-                "captor":"pressure_rack",
+                "captor":"pressure",
                 "unit":"mbar",
                 "resolution":"0.0",
                 "threshold":{  
@@ -35,7 +35,7 @@
                 }
             },
             {  
-                "captor":"humidity_rack",
+                "captor":"humidity",
                 "unit":"%rh",
                 "resolution":"0.0",
                 "threshold":{  
