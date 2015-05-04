@@ -108,3 +108,8 @@ test_yocto.py
 test log.py
 config.json
 config.json
+test-sms.py
+test_mail.py
+config.json
+config.json
+config.json
