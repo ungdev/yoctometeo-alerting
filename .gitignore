@@ -99,3 +99,12 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+config.json
+config.json
+*.iml
+*.xml
+test_yocto.py
+.idea/.name
+test log.py
+config.json
+config.json
