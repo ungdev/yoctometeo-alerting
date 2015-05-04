@@ -1,68 +1,65 @@
 {
-    "configuration":{
-        "module":[
-            {
-                "name":"****",
-                "host":"****",
-                "logical":"****"
+    "configuration": {
+        "general": [{
+            "sleep time": 60000
+        }],
+        "module": [{
+            "name": "****",
+            "host": "***",
+            "logical": "***",
+            "mail": "***",
+            "smtp": "***"
+        }],
+        "mesures": [{
+            "unit": "C",
+            "resolution": "0.1",
+            "threshold": {
+                "mail": {
+                    "level": "warning",
+                    "value": 25,
+                    "interval": 45
+                },
+                "sms": {
+                    "level": "critical",
+                    "value": 30,
+                    "interval": 30
+                }
             }
-        ],
-        "mesures":[
-            {
-                "unit":"C",
-                "resolution":"0.1",
-                "threshold":{
-                    "mail":{
-                        "level":"warning",
-                        "value":25,
-                        "interval":45
-                    },
-                    "sms":{
-                        "level":"critical",
-                        "value":30,
-                        "interval":30
-                    }
+        }, {
+            "unit": "mbar",
+            "resolution": "0.0",
+            "threshold": {
+                "mail": {
+                    "level": "warning",
+                    "value": 1100,
+                    "interval": 30
+                },
+                "sms": {
+                    "level": "critical",
+                    "value": 1100,
+                    "interval": 45
                 }
-            },
-            {
-                "unit":"mbar",
-                "resolution":"0.0",
-                "threshold":{
-                    "mail":{
-                        "level":"warning",
-                        "value":1100,
-                        "interval":30
-                    },
-                    "sms":{
-                        "level":"critical",
-                        "value":1100,
-                        "interval":45
-                    }
-                }
-            },
-            {
-                 "unit": "%rh",
-                "resolution": "0.0",
-                "threshold": {
-                    "mail": {
+            }
+        }, {
+            "unit": "%rh",
+            "resolution": "0.0",
+            "threshold": {
+                "mail": {
                     "level": "warning",
                     "value": 15,
-                    "interval":30
+                    "interval": 30
                 },
                 "sms": {
                     "level": "critical",
                     "value": 60,
-                    "interval":45
+                    "interval": 45
                 }
-              }
-          }
-          ],
-            "users":[
-                {
-                    "user": "****",
-                    "mail": "****",
-                    "Free_url":""
-                }
-            ]
-        }
+            }
+        }],
+        "users": [{
+            "user": "***",
+            "mail": "**@***",
+            "free_url": ""
+        }]
     }
+}
