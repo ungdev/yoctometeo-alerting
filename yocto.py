@@ -13,7 +13,7 @@ from email.mime.text import MIMEText
 modules = []
 captor_types = []
 users_list = []
-moduletest = "METEOMK1-3804F"
+
 
 def die(msg):
     sys.exit(msg + '(check USB cable)')
@@ -56,7 +56,6 @@ class Mesure(object):
             sys.exit("init error" + errmsg.value)
         self.physical_module = yocto_api.YModule.FindModule(self.module_serial)
 
-
     """attribute module to mesure object"""
 
     def get_captor(self):
@@ -92,27 +91,28 @@ class Mesure(object):
 
     def log_sms(self):
         if self.threshold["sms"]["level"] == "warning":
-            self.logger.warning("")
+            self.logger.warning("sms sent")
         elif self.threshold["sms"]["level"] == "error":
-            self.logger.error("")
+            self.logger.error("sms sent")
         elif self.threshold["sms"]["level"] == "critical":
-            self.logger.critical("")
+            self.logger.critical("sms sent")
         else:
-            self.logger.critical("")
+            self.logger.critical("sms sent")
 
     def log_mail(self):
         if self.threshold["mail"]["level"] == "warning":
-            self.logger.warning("")
+            self.logger.warning("mail sent")
         elif self.threshold["mail"]["level"] == "error":
-            self.logger.error("")
+            self.logger.error("mail sent")
         elif self.threshold["mail"]["level"] == "critical":
-            self.logger.critical("")
+            self.logger.critical("mail sent")
         else:
-            self.logger.critical("")
+            self.logger.critical("mail sent")
 
     def __str__(self):
         test = str(self.host) + " " + str(self.physical_module) + " " + str(self.physical_captor) + " " + str(self.module_serial)
         return test
+
 
 class User(object):
     def __init__(self, name, mail, free_url):
@@ -155,25 +155,45 @@ for mesure in captor_types:
 
 
 while True:
-    for mesure in captor_types:
-        mesure.get_value()
-        mesure.logger.info(str(mesure.value))
-        if not mesure.physical_module.isOnline():
-            mesure.logger.critical("deconnected %s, do something!!" % mesure.logical_name)
-            for user in users_list:
-                user.send_mail("YoctoMeteo alert", "deconnected %s!!" % mesure.logical_name)
-                user.send_sms("YoctoMeteo deconnected %s" % mesure.logical_name)
+    with open("thresholds.json", 'r') as state:
+        state_list = json.load(state)
+        for mesure in captor_types:
+            mesure.get_value()
+            mesure.logger.info(str(mesure.value))
+            if not mesure.physical_module.isOnline():
+                mesure.logger.critical("deconnected %s, do something!!" % mesure.logical_name)
+                for user in users_list:
+                    user.send_mail(mesure.smtp, mesure.mail, "YoctoMeteo alert", "deconnected %s!!"
+                                   % mesure.logical_name)
+                    user.send_sms("YoctoMeteo deconnected %s" % mesure.logical_name)
 
-        if mesure.value >= mesure.threshold["mail"]["value"]:
-            mesure.log_mail()
-            for user in users_list:
-                user.send_mail(mesure.smtp, mesure.mail, "YoctoMeteo alert", "%s %s is at %s %s"
-                               % (mesure.logical_name, mesure.type, str(mesure.value), mesure.unit))
+            if mesure.value <= mesure.threshold["mail"]["lower"] and state_list["states"][captor_types.index(mesure)]["mail"] == "enabled":
+                state_list["states"][captor_types.index(mesure)]["mail"] = "disabled"
+                mesure.log_mail()
+                for user in users_list:
+                    user.send_mail(mesure.smtp, mesure.mail, "Yoctometeo alert", "%s %s is back to normal at %s %s" % (mesure.logical_name, mesure.type, str(mesure.value), mesure.unit))
 
-        if mesure.value >= mesure.threshold["sms"]["value"]:
-            mesure.log_sms()
-            for user in users_list:
-                user.send_sms("%s %s is at %s %s" % (mesure.logical_name, mesure.type, str(mesure.value), mesure.unit),
-                              smtp=mesure.smtp, mail=mesure.mail)
+            if mesure.value <= mesure.threshold["sms"]["lower"] and state_list["states"][captor_types.index(mesure)]["sms"] == "enabled":
+                state_list["states"][captor_types.index(mesure)]["sms"] = "disabled"
+                mesure.log_sms()
+                for user in users_list:
+                    user.send_sms("%s %s is back to normal at %s %s" % (mesure.logical_name, mesure.type, str(mesure.value), mesure.unit), smtp=mesure.smtp, sender=mesure.mail)
+
+            if mesure.value >= mesure.threshold["mail"]["value"] and state_list["states"][captor_types.index(mesure)]["mail"] == "disabled":
+                mesure.log_mail()
+                state_list["states"][captor_types.index(mesure)]["mail"] = "enabled"
+                for user in users_list:
+                    user.send_mail(mesure.smtp, mesure.mail, "YoctoMeteo alert", "%s %s is at %s %s"
+                                   % (mesure.logical_name, mesure.type, str(mesure.value), mesure.unit))
+
+            if mesure.value >= mesure.threshold["sms"]["value"] and state_list["states"][captor_types.index(mesure)]["sms"] == "disabled":
+                mesure.log_sms()
+                state_list["states"][captor_types.index(mesure)]["sms"] = "enabled"
+                for user in users_list:
+                    user.send_sms("%s %s is at %s %s" % (mesure.logical_name, mesure.type, str(mesure.value), mesure.unit),
+                                  smtp=mesure.smtp, sender=mesure.mail)
+
+    with open("thresholds.json", "w") as state:
+        state.write(json.dumps(state_list))
 
     yocto_api.YAPI.Sleep(sleep_time)

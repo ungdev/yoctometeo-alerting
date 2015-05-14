@@ -17,12 +17,12 @@
                 "mail": {
                     "level": "warning",
                     "value": 25,
-                    "interval": 45
+                    "lower": 45
                 },
                 "sms": {
                     "level": "critical",
                     "value": 30,
-                    "interval": 30
+                    "lower": 30
                 }
             }
         }, {
@@ -32,12 +32,12 @@
                 "mail": {
                     "level": "warning",
                     "value": 1100,
-                    "interval": 30
+                    "lower": 30
                 },
                 "sms": {
                     "level": "critical",
                     "value": 1100,
-                    "interval": 45
+                    "lower": 45
                 }
             }
         }, {
@@ -47,12 +47,12 @@
                 "mail": {
                     "level": "warning",
                     "value": 15,
-                    "interval": 30
+                    "lower": 30
                 },
                 "sms": {
                     "level": "critical",
                     "value": 60,
-                    "interval": 45
+                    "lower": 45
                 }
             }
         }],
