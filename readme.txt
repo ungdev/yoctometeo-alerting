@@ -2,6 +2,14 @@
 
 This program has been designed to alert administrators if environmental variables cross certain thresholds, using a Yocto-Meteo station device.
 
+## Installation guide
+
+First, install the Yoctopuce SDK for Python available in PyPi repositories :
+'''
+pip install yoctopuce
+'''
+
+
 ## Configuration tips
 
 Read me before changing conf file!!
