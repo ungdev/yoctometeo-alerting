@@ -1,5 +1,12 @@
 {
   "sleep-time": 60000,
+  "mail-server": {
+    "host": "smtp.example.tld",
+    "port": "465",
+    "tls": "yes",
+    "username": "ano.nymous", //leave blank if no authentication is required
+    "password": "Azerty"
+  },
   "modules": [
     {
       "hardware-id": "****",
