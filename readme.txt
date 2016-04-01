@@ -1,3 +1,9 @@
+# Yocto-meteo alerting
+
+This program has been designed to alert administrators if environmental variables cross certain thresholds, using a Yocto-Meteo station device.
+
+## Configuration tips
+
 Read me before changing conf file!!
 Here is how to to write a good conf file for yoctometeo-alerting python script created by bijou
 
