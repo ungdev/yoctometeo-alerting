@@ -5,7 +5,8 @@
     "port": "465",
     "tls": "yes",
     "username": "ano.nymous", //leave blank if no authentication is required
-    "password": "Azerty"
+    "password": "Azerty",
+    "from-address": "yocto@example.tld"
   },
   "modules": [
     {
