@@ -1,0 +1,35 @@
+{
+  "sleep-time": 60000,
+  "modules": [
+    {
+      "hardware-id": "****",
+      "host": "***",
+      "sensors": [
+        {
+          "type": "temperature|humidity|pressure",
+          "alerts": [
+            {
+              "alert-vector": "email",
+              "level": "warning",
+              "trigger": 25,
+              "reset": 22
+            },
+            {
+              "alert-vector": "sms",
+              "level": "critical",
+              "trigger": 30,
+              "reset": 22
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "addressees": [
+    {
+      "name": "***",
+      "mail": "**@***",
+      "phone-number": "+336XXXXXXXXX"
+    }
+  ]
+}
