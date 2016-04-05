@@ -1,4 +1,4 @@
-
+from alerting import *
 
 class Alert(object):
 
@@ -18,3 +18,34 @@ class Alert(object):
         self.sensor = sensor
         self.status = "iddle"
 
+    def check(self, config_mail, addressees):
+        value = self.sensor.get_value()
+        if self.status == "iddle":
+            if self.direction == "over":
+                if value > self.trigger:
+                    self.trigger(value)
+            elif self.direction == "below":
+                if value < self.trigger:
+                    self.trigger(value)
+        elif self.status == "triggered":
+            if self.direction == "over":
+                if value < self.trigger:
+                    self.reset(value)
+            elif self.direction == "below":
+                if value > self.trigger:
+                    self.reset(value)
+
+    def trigger(self, value, config_mail, addressees):
+        self.status = "triggered"
+        print("Debut alerte")
+        if self.vector == "email":
+            for addressee in addressees:
+                send_mail(config_mail, addressee["mail"], "Alert", "Alert")
+
+
+    def reset(self, value, config_mail, addressees):
+        self.status = "iddle"
+        print("Fin alerte")
+        if self.vector == "email":
+            for addressee in addressees:
+                send_mail(config_mail, addressee["mail"], "End Alert", "End Alert")
