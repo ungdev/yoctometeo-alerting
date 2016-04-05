@@ -24,13 +24,13 @@ with open('config.json') as config_file:
             obj_sensor.get_hw_sensor()
             sensors.append(obj_sensor)
             for alert in sensor["alerts"]:
-                obj_alert = Alert(obj_sensor, alert)
+                obj_alert = Alert(obj_sensor, json_config=alert)
                 alerts.append(obj_alert)
 
 while True:
-    print("---- %s ----" % time.asctime(time.localtime(time.time())))
-    for sensor in sensors:
-        print("Module %s, %s sensor : %f %s" % (sensor.module.hwid, sensor.type, sensor.get_value(), sensor.get_unit()))
+    #print("---- %s ----" % time.asctime(time.localtime(time.time())))
+    #for sensor in sensors:
+    #    print("Module %s, %s sensor : %f %s" % (sensor.module.hwid, sensor.type, sensor.get_value(), sensor.get_unit()))
     for alert in alerts:
         alert.check(mail_config, addressees)
     YAPI.Sleep(1000)
