@@ -7,7 +7,7 @@ import yoctopuce.yocto_pressure as ypres
 
 class Sensor(object):
 
-    def __init__(self, type=None, module=None, json_config=None):
+    def __init__(self, module, type=None, json_config=None):
         if json_config is not None:
             self.type = json_config["type"]
             self.module = module
