@@ -19,14 +19,23 @@
             {
               "alert-vector": "email",
               "level": "warning",
+              "direction": "over",
               "trigger": 25,
               "reset": 22
             },
             {
               "alert-vector": "sms",
               "level": "critical",
+              "direction": "over",
               "trigger": 30,
               "reset": 22
+            },
+            {
+              "alert-vector": "email",
+              "level": "warning",
+              "direction": "under",
+              "trigger": 15,
+              "reset": 18
             }
           ]
         }
