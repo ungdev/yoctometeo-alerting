@@ -8,14 +8,11 @@ class Sensor(object):
     def __init__(self, module, type=None, json_config=None):
         if json_config is not None:
             self.type = json_config["type"]
-            self.module = module
-            self.hw_sensor = None
-            self.unit = None
         else:
             self.type = type
-            self.module = module
-            self.hw_sensor = None
-            self.unit = None
+        self.module = module
+        self.hw_sensor = None
+        self.unit = None
 
     def get_hw_sensor(self):
         if self.hw_sensor is None:

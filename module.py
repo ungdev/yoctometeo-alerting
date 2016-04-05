@@ -8,11 +8,10 @@ class Module(object):
         if json_config is not None:
             self.host = json_config["host"]
             self.hwid = json_config["hardware-id"]
-            self.hw_module = None
         else:
             self.host = host
             self.hwid = hardware_id
-            self.hw_module = None
+        self.hw_module = None
 
     def get_hw_module(self):
         if self.hw_module is None:

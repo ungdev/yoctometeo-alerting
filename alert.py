@@ -9,11 +9,12 @@ class Alert(object):
             self.direction = json_config["direction"]
             self.trigger = json_config["trigger"]
             self.reset = json_config["reset"]
-            self.sensor = sensor
         else:
             self.vector = alert_vector
             self.level = level
             self.direction = direction
             self.trigger = trigger
             self.reset = reset
-            self.sensor = sensor
+        self.sensor = sensor
+        self.status = "iddle"
+
