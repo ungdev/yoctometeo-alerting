@@ -30,22 +30,28 @@ class Alert(object):
                     self.triggering(value, config_mail, addressees)
         elif self.status == "triggered":
             if self.direction == "over":
-                if value < self.trigger:
+                if value < self.reset:
                     self.reseting(value, config_mail, addressees)
             elif self.direction == "below":
-                if value > self.trigger:
+                if value > self.reset:
                     self.reseting(value, config_mail, addressees)
 
     def triggering(self, value, config_mail, addressees):
         self.status = "triggered"
-        print("Debut alerte")
+        sensor_type = self.sensor.type
+        subject = "%s alert" % (sensor_type)
+        body = "Module %s, %s sensor : %4.1f %s, expected %s %4.1f" % (
+            self.sensor.module.hwid, sensor_type, value, self.sensor.get_unit(), "<" if self.direction == "over" else ">", self.trigger)
         if self.vector == "email":
             for addressee in addressees:
-                send_mail(config_mail, addressee["mail"], "Alert", "Alert")
+                send_mail(config_mail, addressee["mail"], subject, body)
 
     def reseting(self, value, config_mail, addressees):
         self.status = "iddle"
-        print("Fin alerte")
+        sensor_type = self.sensor.type
+        subject = "End of %s alert" % (sensor_type)
+        body = "Module %s, %s sensor : back to normal (%4.1f %s)" % (
+            self.sensor.module.hwid, sensor_type, value, self.sensor.get_unit())
         if self.vector == "email":
             for addressee in addressees:
-                send_mail(config_mail, addressee["mail"], "End Alert", "End Alert")
+                send_mail(config_mail, addressee["mail"], subject, body)
