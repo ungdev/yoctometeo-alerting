@@ -20,7 +20,6 @@ class Alert(object):
 
     def check(self, config_mail, addressees):
         value = self.sensor.get_value()
-        print("value : %f" % value)
         if self.status == "iddle":
             if self.direction == "over":
                 if value > self.trigger:
