@@ -15,14 +15,14 @@ class Alert(object):
 
     def triggering(self, config_mail, addressees, body=None):
         self.status = "triggered"
-        if self.vector == "email":
+        if (self.vector == "email") | (self.vector == "*"):
             subject = "%s alert" % self.alert_type
             for addressee in addressees:
                 send_mail(config_mail, addressee["mail"], subject, body)
 
     def resetting(self, config_mail, addressees, body=None):
         self.status = "iddle"
-        if self.vector == "email":
+        if (self.vector == "email") | (self.vector == "*"):
             subject = "End of %s alert" % self.alert_type
             for addressee in addressees:
                 send_mail(config_mail, addressee["mail"], subject, body)
