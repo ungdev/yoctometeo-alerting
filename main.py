@@ -2,7 +2,7 @@ import json
 import time
 from module import Module
 from sensor import Sensor
-from alert import Alert
+from alert import *
 from exceptions import *
 from yoctopuce.yocto_api import *
 
@@ -20,6 +20,7 @@ with open('config.json') as config_file:
         obj_module = Module(json_config=module)
         obj_module.get_hw_module()
         modules.append(obj_module)
+        alerts.append(ModuleDisconnectedAlert(obj_module))
         for sensor in module["sensors"]:
             obj_sensor = Sensor(obj_module, json_config=sensor)
             obj_sensor.get_hw_sensor()
