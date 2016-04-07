@@ -3,6 +3,7 @@ import time
 from module import Module
 from sensor import Sensor
 from alert import Alert
+from exceptions import *
 from yoctopuce.yocto_api import *
 
 modules = []
@@ -28,9 +29,12 @@ with open('config.json') as config_file:
                 alerts.append(obj_alert)
 
 while True:
-    print("---- %s ----" % time.asctime(time.localtime(time.time())))
-    for sensor in sensors:
-        print("Module %s, %s sensor : %4.1f %s" % (sensor.module.hwid, sensor.type, sensor.get_value(), sensor.get_unit()))
-    for alert in alerts:
-        alert.check(mail_config, addressees)
+    try:
+        print("---- %s ----" % time.asctime(time.localtime(time.time())))
+        for sensor in sensors:
+            print("Module %s, %s sensor : %4.1f %s" % (sensor.module.hwid, sensor.type, sensor.get_value(), sensor.get_unit()))
+        for alert in alerts:
+            alert.check(mail_config, addressees)
+    except DisconnectedModuleException as dme:
+        print(dme)
     YAPI.Sleep(1000)
