@@ -30,7 +30,7 @@ class Alert(object):
 
 class ModuleDisconnectedAlert(Alert):
 
-    def __init__(self, module, alert_vector="*", level=None, status="iddle", alert_type="module"):
+    def __init__(self, module, alert_vector="*", level="critical", status="iddle", alert_type="module"):
         Alert.__init__(self, alert_vector, level, status, alert_type)
         self.module = module
 
