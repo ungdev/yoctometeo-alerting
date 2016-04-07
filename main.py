@@ -13,8 +13,7 @@ alerts = []
 with open('config.json') as config_file:
     config = json.load(config_file)
     mail_config = config["mail-server"]
-    #sleep_time = config["sleep-time"]
-    sleep_time = 5
+    sleep_time = config["sleep-time"]
     addressees = config["addressees"]
     for module in config["modules"]:
         obj_module = Module(json_config=module)
@@ -30,12 +29,9 @@ with open('config.json') as config_file:
                 alerts.append(obj_alert)
 
 while True:
-    try:
-        print("---- %s ----" % time.asctime(time.localtime(time.time())))
-        for sensor in sensors:
-            print("Module %s, %s sensor : %4.1f %s" % (sensor.module.hwid, sensor.type, sensor.get_value(), sensor.get_unit()))
-        for alert in alerts:
-            alert.check(mail_config, addressees)
-    except DisconnectedModuleException as dme:
-        print(dme)
+    print("---- %s ----" % time.asctime(time.localtime(time.time())))
+    for sensor in sensors:
+        print("Module %s, %s sensor : %4.1f %s" % (sensor.module.hwid, sensor.type, sensor.get_value(), sensor.get_unit()))
+    for alert in alerts:
+        alert.check(mail_config, addressees)
     YAPI.Sleep(1000)
