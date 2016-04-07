@@ -26,7 +26,7 @@ with open('config.json') as config_file:
             obj_sensor.get_hw_sensor()
             sensors.append(obj_sensor)
             for alert in sensor["alerts"]:
-                obj_alert = Alert(obj_sensor, json_config=alert)
+                obj_alert = SensorAlert(obj_sensor, json_config=alert)
                 alerts.append(obj_alert)
 
 while True:
