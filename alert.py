@@ -34,6 +34,7 @@ class Alert(object):
             elif self.direction == "below":
                 if value > self.reset:
                     self.reseting(value, config_mail, addressees)
+        return self.status
 
     def triggering(self, value, config_mail, addressees):
         self.status = "triggered"
