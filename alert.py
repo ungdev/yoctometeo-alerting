@@ -2,7 +2,7 @@ from alerting import *
 
 class Alert(object):
 
-    def __init__(self, sensor, alert_vector=None, level=None, direction=None, trigger=None, reset=None, json_config=None):
+    def __init__(self, sensor, alert_vector=None, level=None, direction=None, trigger=None, reset=None, status="iddle", json_config=None):
         if json_config is not None:
             self.vector = json_config["alert-vector"]
             self.level = json_config["level"]
@@ -16,7 +16,7 @@ class Alert(object):
             self.trigger = trigger
             self.reset = reset
         self.sensor = sensor
-        self.status = "iddle"
+        self.status = status
 
     def check(self, config_mail, addressees):
         value = self.sensor.get_value()
