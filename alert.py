@@ -1,4 +1,5 @@
 from alerting import *
+from exceptions import *
 
 
 class Alert(object):
@@ -25,6 +26,34 @@ class Alert(object):
             subject = "End of %s alert" % self.alert_type
             for addressee in addressees:
                 send_mail(config_mail, addressee["mail"], subject, body)
+
+
+class ModuleDisconnectedAlert(Alert):
+
+    def __init__(self, module, alert_vector="*", level=None, status="iddle", alert_type="module"):
+        Alert.__init__(self, alert_vector, level, status, alert_type)
+        self.module = module
+
+    def check(self, config_mail, addressees):
+        try:
+            self.module.get_hw_module()
+        except DisconnectedModuleException as dme:
+            if self.status == "iddle":
+                self.triggering(config_mail, addressees)
+        else:
+            if self.status == "triggered":
+                self.resetting(config_mail, addressees)
+        return self.status
+
+    def triggering(self, config_mail, addressees, body=None):
+        id = self.module.hwid
+        body = "Module %s appears to be disconnected. Alerts related to this module will be suspended pending resolution." % id
+        Alert.triggering(self, config_mail, addressees, body)
+
+    def resetting(self, config_mail, addressees, body=None):
+        id = self.module.hwid
+        body = "Module %s has been reconnected. Resuming normal operation." % id
+        Alert.resetting(self, config_mail, addressees, body)
 
 
 class SensorAlert(Alert):
