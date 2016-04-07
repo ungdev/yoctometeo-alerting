@@ -1,5 +1,6 @@
 import sys
 import yoctopuce.yocto_api as yapi
+from exceptions import *
 
 
 class Module(object):
@@ -19,4 +20,6 @@ class Module(object):
             if yapi.YAPI.RegisterHub(self.host, errmsg) != yapi.YAPI.SUCCESS:
                 sys.exit("init error" + errmsg.value)
             self.hw_module = yapi.YModule.FindModule(self.hwid)
+        if not self.hw_module.isOnline():
+            raise DisconnectedModuleException(self)
         return self.hw_module

@@ -1,6 +1,7 @@
 from yoctopuce.yocto_humidity import *
 from yoctopuce.yocto_temperature import *
 from yoctopuce.yocto_pressure import *
+from exceptions import *
 
 
 class Sensor(object):
@@ -29,8 +30,16 @@ class Sensor(object):
     
     def get_unit(self):
         if self.unit is None:
-            self.unit = self.get_hw_sensor().get_unit()
+            try:
+                self.unit = self.get_hw_sensor().get_unit()
+            except DisconnectedModuleException as dme:
+                raise DisconnectedModuleException(dme.module, self)
         return self.unit
 
     def get_value(self):
-        return self.get_hw_sensor().get_currentValue()
+        try:
+            self.module.get_hw_module()
+            return self.get_hw_sensor().get_currentValue()
+        except DisconnectedModuleException as dme:
+            dme.sensor = self
+            raise
