@@ -47,8 +47,8 @@ class ModuleDisconnectedAlert(Alert):
         return self.status
 
     def triggering(self, config_mail, addressees, body=None):
-        id = self.module.hwid
-        body = "Module %s appears to be disconnected. Alerts related to this module will be suspended pending resolution." % id
+        modid = self.module.hwid
+        body = "Module %s appears to be disconnected. Alerts related to this module will be suspended pending resolution." % modid
         Alert.triggering(self, config_mail, addressees, body)
 
     def resetting(self, config_mail, addressees, body=None):
@@ -78,17 +78,17 @@ class SensorAlert(Alert):
         if self.status == "iddle":
             if self.direction == "over":
                 if value > self.trigger:
-                    self.triggering(value, config_mail, addressees)
+                    self.triggering(config_mail, addressees)
             elif self.direction == "below":
                 if value < self.trigger:
-                    self.triggering(value, config_mail, addressees)
+                    self.triggering(config_mail, addressees)
         elif self.status == "triggered":
             if self.direction == "over":
                 if value < self.reset:
-                    self.resetting(value, config_mail, addressees)
+                    self.resetting(config_mail, addressees)
             elif self.direction == "below":
                 if value > self.reset:
-                    self.resetting(value, config_mail, addressees)
+                    self.resetting(config_mail, addressees)
         return self.status
 
     def triggering(self, config_mail, addressees, body=None):
