@@ -59,10 +59,10 @@ class ModuleDisconnectedAlert(Alert):
 
 class SensorAlert(Alert):
 
-    def __init__(self, alert_id, sensor, alert_vector=None, level=None, direction=None, trigger=None, reset=None,
+    def __init__(self, sensor, alert_id=None, alert_vector=None, level=None, direction=None, trigger=None, reset=None,
                  status="iddle", json_config=None):
         if json_config is not None:
-            Alert.__init__(self, json_config["alert_id"], json_config["alert-vector"], json_config["level"], status, sensor.type)
+            Alert.__init__(self, json_config["alert-id"], json_config["alert-vector"], json_config["level"], status, sensor.type)
             self.direction = json_config["direction"]
             self.trigger = json_config["trigger"]
             self.reset = json_config["reset"]
