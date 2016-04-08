@@ -17,6 +17,7 @@
           "type": "temperature|humidity|pressure",
           "alerts": [
             {
+              "alert-id": 1,
               "alert-vector": "email",
               "level": "warning",
               "direction": "over",
@@ -24,6 +25,7 @@
               "reset": 22
             },
             {
+              "alert-id": 2,
               "alert-vector": "sms",
               "level": "critical",
               "direction": "over",
@@ -31,6 +33,7 @@
               "reset": 22
             },
             {
+              "alert-id": 3,
               "alert-vector": "email",
               "level": "warning",
               "direction": "under",
