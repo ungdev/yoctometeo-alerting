@@ -5,7 +5,8 @@ from main import addressees, mail_config
 
 class Alert(object):
 
-    def __init__(self, alert_vector=None, level=None, status="iddle", alert_type="generic"):
+    def __init__(self, alert_id, alert_vector=None, level=None, status="iddle", alert_type="generic"):
+        self.id = alert_id
         self.vector = alert_vector
         self.level = level
         self.status = status
@@ -31,8 +32,8 @@ class Alert(object):
 
 class ModuleDisconnectedAlert(Alert):
 
-    def __init__(self, module, alert_vector="*", level="critical", status="iddle", alert_type="module"):
-        Alert.__init__(self, alert_vector, level, status, alert_type)
+    def __init__(self, alert_id, module, alert_vector="*", level="critical", status="iddle", alert_type="module"):
+        Alert.__init__(self, alert_id, alert_vector, level, status, alert_type)
         self.module = module
 
     def check(self):
@@ -59,15 +60,15 @@ class ModuleDisconnectedAlert(Alert):
 
 class SensorAlert(Alert):
 
-    def __init__(self, sensor, alert_vector=None, level=None, direction=None, trigger=None, reset=None,
+    def __init__(self, sensor, alert_id=None, alert_vector=None, level=None, direction=None, trigger=None, reset=None,
                  status="iddle", json_config=None):
         if json_config is not None:
-            Alert.__init__(self, json_config["alert-vector"], json_config["level"], status, sensor.type)
+            Alert.__init__(self, json_config["alert-id"], json_config["alert-vector"], json_config["level"], status, sensor.type)
             self.direction = json_config["direction"]
             self.trigger = json_config["trigger"]
             self.reset = json_config["reset"]
         else:
-            Alert.__init__(self, alert_vector, level, status, sensor.type)
+            Alert.__init__(self, alert_id, alert_vector, level, status, sensor.type)
             self.direction = direction
             self.trigger = trigger
             self.reset = reset
