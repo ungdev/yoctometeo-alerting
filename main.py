@@ -33,5 +33,5 @@ while True:
     for sensor in sensors:
         print("Module %s, %s sensor : %4.1f %s" % (sensor.module.hwid, sensor.type, sensor.get_value(), sensor.get_unit()))
     for alert in alerts:
-        alert.check(mail_config, addressees)
+        alert.check()
     YAPI.Sleep(1000)
