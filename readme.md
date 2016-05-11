@@ -9,7 +9,7 @@ First, install the Yoctopuce SDK for Python available in PyPi repositories :
 pip install yoctopuce
 ```
 
-Depending on your needs, you might want to add the following dependency to log infos to a Graylog server :
+Depending on your needs, you might want to add the following dependency in order to send log messages to a Graylog server :
 ```
 pip install graypy
 ```
