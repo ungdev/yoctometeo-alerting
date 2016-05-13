@@ -4,6 +4,7 @@ from module import Module
 from sensor import Sensor
 from alert import *
 from exceptions import *
+from filters import *
 from yoctopuce.yocto_api import *
 import logging
 import graypy
@@ -18,23 +19,26 @@ with open('config.json') as config_file:
     log_config = config["log-server"]
     sleep_time = config["sleep-time"]
     addressees = config["addressees"]
+
+    logger = logging.getLogger('yoctometeo-alerting')
+    logger.setLevel(logging.DEBUG)
+    handler = graypy.GELFHandler(log_config["host"], log_config["port"])
+    logger.addHandler(handler)
+
     for module in config["modules"]:
         obj_module = Module(json_config=module)
         obj_module.get_hw_module()
         modules.append(obj_module)
+        logger.addFilter(ModuleFilter(obj_module))
         alerts.append(ModuleDisconnectedAlert("alert.module.%s" % obj_module.hwid, obj_module))
         for sensor in module["sensors"]:
             obj_sensor = Sensor(obj_module, json_config=sensor)
             obj_sensor.get_hw_sensor()
             sensors.append(obj_sensor)
+            logger.addFilter(SensorFilter(obj_sensor))
             for alert in sensor["alerts"]:
                 obj_alert = SensorAlert(obj_sensor, json_config=alert)
                 alerts.append(obj_alert)
-
-logger = logging.getLogger('yoctometeo-alerting')
-logger.setLevel(logging.DEBUG)
-handler = graypy.GELFHandler(log_config["host"], log_config["port"])
-logger.addHandler(handler)
 
 try:
     states_file_read = open('states.json', 'r')
@@ -50,6 +54,7 @@ else:
 states = dict()
 while True:
     print("---- %s ----" % time.asctime(time.localtime(time.time())))
+    logger.info("Program operation report")
     try:
         for alert in alerts:
             states[alert.id] = alert.check(mail_config, addressees, logger)
