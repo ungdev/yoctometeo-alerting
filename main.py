@@ -54,15 +54,14 @@ else:
 states = dict()
 while True:
     print("---- %s ----" % time.asctime(time.localtime(time.time())))
-    logger.info("Program operation report")
     try:
         for alert in alerts:
             states[alert.id] = alert.check(mail_config, addressees, logger)
         for sensor in sensors:
             print("Module %s, %s sensor : %4.1f %s" % (sensor.module.hwid, sensor.type, sensor.get_value(), sensor.get_unit()))
+        logger.info("Program operation report")
     except DisconnectedModuleException as dme:
         print(dme)
-        #logger.critical("Module disconnected", exc_info=1)
     finally:
         with open("states.json", "w") as states_file_write:
             states_file_write.write(json.dumps(states))

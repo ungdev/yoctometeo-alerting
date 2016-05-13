@@ -25,16 +25,15 @@ class SensorFilter(logging.Filter):
 
         try:
             value = self.sensor.get_value()
-            msg = "%s %s" % (value, unit)
         except DisconnectedModuleException as dme:
-            msg = "N/A"
+            value = "N/A"
 
         if self.sensor.type == "temperature":
-            record.temperature = msg
+            record.temperature = value
         elif self.sensor.type == "humidity":
-            record.humidity = msg
+            record.humidity = value
         elif self.sensor.type == "pressure":
-            record.pressure = msg
+            record.pressure = value
         else:
             return True
 
