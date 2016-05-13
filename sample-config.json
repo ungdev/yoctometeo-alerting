@@ -8,6 +8,10 @@
     "password": "Azerty",
     "from-address": "yocto@example.tld"
   },
+  "log-server": {
+    "host": "log.example.tld",
+    "port": 12201
+  },
   "modules": [
     {
       "hardware-id": "****",

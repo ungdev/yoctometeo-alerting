@@ -12,14 +12,10 @@ modules = []
 sensors = []
 alerts = []
 
-logger = logging.getLogger('yoctometeo-alerting')
-logger.setLevel(logging.DEBUG)
-handler = graypy.GELFHandler('log.uttnetgroup.fr', 12201)
-logger.addHandler(handler)
-
 with open('config.json') as config_file:
     config = json.load(config_file)
     mail_config = config["mail-server"]
+    log_config = config["log-server"]
     sleep_time = config["sleep-time"]
     addressees = config["addressees"]
     for module in config["modules"]:
@@ -34,6 +30,12 @@ with open('config.json') as config_file:
             for alert in sensor["alerts"]:
                 obj_alert = SensorAlert(obj_sensor, json_config=alert)
                 alerts.append(obj_alert)
+
+logger = logging.getLogger('yoctometeo-alerting')
+logger.setLevel(logging.DEBUG)
+handler = graypy.GELFHandler(log_config["host"], log_config["port"])
+logger.addHandler(handler)
+
 try:
     states_file_read = open('states.json', 'r')
 except FileNotFoundError:
