@@ -5,10 +5,17 @@ from sensor import Sensor
 from alert import *
 from exceptions import *
 from yoctopuce.yocto_api import *
+import logging
+import graypy
 
 modules = []
 sensors = []
 alerts = []
+
+logger = logging.getLogger('yoctometeo-alerting')
+logger.setLevel(logging.DEBUG)
+handler = graypy.GELFHandler('log.uttnetgroup.fr', 12201)
+logger.addHandler(handler)
 
 with open('config.json') as config_file:
     config = json.load(config_file)
@@ -43,11 +50,12 @@ while True:
     print("---- %s ----" % time.asctime(time.localtime(time.time())))
     try:
         for alert in alerts:
-            states[alert.id] = alert.check(mail_config, addressees)
+            states[alert.id] = alert.check(mail_config, addressees, logger)
         for sensor in sensors:
             print("Module %s, %s sensor : %4.1f %s" % (sensor.module.hwid, sensor.type, sensor.get_value(), sensor.get_unit()))
     except DisconnectedModuleException as dme:
         print(dme)
+        #logger.critical("Module disconnected", exc_info=1)
     finally:
         with open("states.json", "w") as states_file_write:
             states_file_write.write(json.dumps(states))

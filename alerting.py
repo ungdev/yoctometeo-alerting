@@ -17,3 +17,14 @@ def send_mail(config, addressee, subject, body):
     mailserver.login(config["username"], config["password"])
     mailserver.sendmail(config["from-address"], addressee, msg.as_string())
     mailserver.quit()
+
+
+def send_log_alert(logger, level, msg):
+    if level == 'critical':
+        logger.critical(msg)
+    elif level == 'error':
+        logger.error(msg)
+    elif level == 'warning':
+        logger.warning(msg)
+    else:
+        logger.info(msg)
