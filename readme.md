@@ -98,23 +98,6 @@ One must be defined for each variable to be monitored, for each module, with the
 }
 ```
 
-#### Sensor object
-
-These objects define a sensor, meaning an environmental variable (not necessarily a separate physical equipment).
-One must be defined for each variable to be monitored, for each module, with the following parameters :
-- The sensor type, to be chosed among the following :
-    - temperature
-    - humidity
-    - pressure
-- An array of alert objects, whose description can be found in the next section
-
-```
-{
-    "type": "temperature|humidity|pressure",
-    "alerts": []
-}
-```
-
 #### Alert object
 
 These objects define an alert, meaning a threshold which, if crossed, will trigger an alerting action.
