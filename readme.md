@@ -9,25 +9,139 @@ First, install the Yoctopuce SDK for Python available in PyPi repositories :
 pip install yoctopuce
 ```
 
-Depending on your needs, you might want to add the following dependency in order to send log messages to a Graylog server :
+Depending on your needs, you might want to install the following dependency in order to send log messages to a Graylog server :
 ```
 pip install graypy
 ```
 
+## Configuration
 
-## Configuration tips
+The configuration is stored in a JSON-syntax file `config.json`. A sample skeleton may be found in the repository : `sample-config.json`.
+This section will briefly summarize the available options.
 
-Read me before changing conf file!!
-Here is how to to write a good conf file for yoctometeo-alerting python script created by bijou
+### sleep-time
 
-First get the serial name(YOCTOMETEOMK******) (or logical name) of all your modules, put it in the dict list "module" along with
-their hosts (IP of corresponding virtual hub (if local: 127.0.0.1 or localhost))
+The program will automatically perform a check sequence after the expiry of the delay since the last sequence completed.
+To be expressed in milliseconds.
 
-Then in the "mesures" dict list specify unit !! only C(for celsius degre),mbar and %rh are handled at the moment !!
-The resolution is not yet handled (coming soon)
-Threshold is important only two means of communication are handled at the moment: mail and sms via free-mobile api, specify the level corresponding
-to the type of alert (warning, error or critical) for logs, don't forget to specify the value of the threshold.
-At the end fill the users dict list, user is just there to be used by you to find who is who in the config file. If the user doesn't have a
-free-mobile account then just put a blank string "". sms won't be sent, a mail will replace it.
+### mail-server
 
-At the moment each time a threshold is exceeded corresping alert is sent. (working on it)
+This section defines the parameters required to send alerts through e-mails.
+```
+"mail-server": {
+    "host": "smtp.example.tld",
+    "port": "465",
+    "tls": "yes", // whether using TLS encryption
+    "username": "ano.nymous", //leave blank if no authentication is required
+    "password": "Azerty",
+    "from-address": "yocto@example.tld" // Originating e-mail address, will appear to the recipient
+}
+```
+
+### log-server
+
+This section defines the parameters required to send alerts to a Graylog server. Optional.
+```
+"log-server": {
+    "host": "log.example.tld",
+    "port": 12201
+}
+```
+
+### addressees
+
+This section defines the people who will receive the alerts, with their contact infos.
+It is an array of objects defined as follow :
+```
+"addressees": [
+    {
+      "name": "****", // Name of the addressee
+      "mail": "**@***", // Email address
+      "phone-number": "+336XXXXXXXXX" // Phone number
+    }
+]
+```
+
+### modules
+
+This section defines the YoctoMeteo devices used by the program. Here are the different components of this section.
+
+#### Module object
+
+These objects define a module, as a hardware piece of equipment, with the following parameters :
+- The hardware ID, which can be found using YoctoPuce SDKs or demo softwares, it is used to uniquely identify a module.
+- The host on which the module is connected (localhost when connected to the very machine used to run the program)
+- An array of sensor objects, whose description can be found in the next section
+
+```
+{
+  "hardware-id": "****",
+  "host": "***",
+  "sensors": []
+}
+```
+
+#### Sensor object
+
+These objects define a sensor, meaning an environmental variable (not necessarily a separate physical equipment).
+One must be defined for each variable to be monitored, for each module, with the following parameters :
+- The sensor type, to be chosed among the following :
+    - temperature
+    - humidity
+    - pressure
+- An array of alert objects, whose description can be found in the next section
+
+```
+{
+    "type": "temperature|humidity|pressure",
+    "alerts": []
+}
+```
+
+#### Sensor object
+
+These objects define a sensor, meaning an environmental variable (not necessarily a separate physical equipment).
+One must be defined for each variable to be monitored, for each module, with the following parameters :
+- The sensor type, to be chosed among the following :
+    - temperature
+    - humidity
+    - pressure
+- An array of alert objects, whose description can be found in the next section
+
+```
+{
+    "type": "temperature|humidity|pressure",
+    "alerts": []
+}
+```
+
+#### Alert object
+
+These objects define an alert, meaning a threshold which, if crossed, will trigger an alerting action.
+Sensors can handle multiple alerts, for instance lowlevel e-mail alert for a small overheating, and a hurry SMS alert for a fire-like problem.
+It must be defined with the following parameters :
+- An identifier to remain unique among the program instance
+- The vector used to transmit the alert (if a log server has been defined, each and every alert will be forwarded to it), currently supported :
+    - E-mail
+    - SMS (coming soon)
+- The alert level (used for the logging system), to be chosed among the following, by increasing degree of harm :
+    - warning
+    - error
+    - critical
+- The variable can pass **below** or **over** the threshold
+- The trigger threshold : crossing it in the aforementioned direction will trigger the alert
+- The reset threshold : crossing it in the direction opposite to the aforementioned will reset the alert
+
+The interest of this double-threshold mechanism is to introduce a hysteresis,
+thus avoiding endless alert/end-of-alert messages when the value bounces arround the threshold.
+
+```
+{
+    "alert-id": 1,
+    "alert-vector": "email",
+    "level": "warning",
+    "direction": "over",
+    "trigger": 25,
+    "reset": 22
+}
+```
