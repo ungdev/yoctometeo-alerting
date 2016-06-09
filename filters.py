@@ -1,6 +1,14 @@
 import logging
 from exceptions import *
 
+class AppNameFilter(logging.Filter):
+    def __init__(self, appName):
+        super().__init__()
+        self.appName = appName
+
+    def filter(self, record):
+        record.application_name = self.appName
+        return True
 
 class ModuleFilter(logging.Filter):
     def __init__(self, module):

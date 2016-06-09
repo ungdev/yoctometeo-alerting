@@ -28,9 +28,10 @@ with open('config.json') as config_file:
     sleep_time = config["sleep-time"]
     addressees = config["addressees"]
 
-    logger = logging.getLogger('yoctometeo-alerting')
+    logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
     if log_config is not None:
+        logger.addFilter(AppNameFilter(log_config["application-name"]))
         handler = graypy.GELFHandler(log_config["host"], log_config["port"])
         logger.addHandler(handler)
 

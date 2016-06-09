@@ -10,7 +10,8 @@
   },
   "log-server": {
     "host": "log.example.tld",
-    "port": 12201
+    "port": 12201,
+    "application-name": "yoctometeo-alerting"
   },
   "modules": [
     {
