@@ -6,6 +6,7 @@ from sensor import Sensor
 from alert import *
 from filters import *
 from yoctopuce.yocto_api import *
+from os import path
 import logging
 import graypy
 
@@ -13,7 +14,9 @@ modules = []
 sensors = []
 alerts = []
 
-with open('config.json') as config_file:
+CONFIG_PATH = os.path.join(os.path.dirname(__file__), 'config.json')
+
+with open(CONFIG_PATH) as config_file:
     config = json.load(config_file)
     if 'mail-server' not in config:
         print("Mail server config missing : e-mail alerts will be unavailable.")
