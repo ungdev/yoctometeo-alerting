@@ -1,4 +1,4 @@
-#!/usr/bin/python3 -p
+#!/usr/bin/python3
 
 import json
 from module import Module
