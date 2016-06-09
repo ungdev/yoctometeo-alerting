@@ -1,9 +1,7 @@
 import json
-import time
 from module import Module
 from sensor import Sensor
 from alert import *
-from exceptions import *
 from filters import *
 from yoctopuce.yocto_api import *
 import logging
@@ -63,16 +61,13 @@ else:
 
 states = dict()
 while True:
-    print("---- %s ----" % time.asctime(time.localtime(time.time())))
     try:
         for alert in alerts:
             states[alert.id] = alert.check(mail_config, addressees, logger)
-        for sensor in sensors:
-            print("Module %s, %s sensor : %4.1f %s" % (sensor.module.hwid, sensor.type, sensor.get_value(), sensor.get_unit()))
         logger.info("Program operation report")
     except DisconnectedModuleException as dme:
         print(dme)
     finally:
         with open("states.json", "w") as states_file_write:
             states_file_write.write(json.dumps(states))
-        YAPI.Sleep(1000)
+        YAPI.Sleep(sleep_time)
