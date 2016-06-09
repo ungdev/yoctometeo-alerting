@@ -1,3 +1,5 @@
+#!/usr/bin/python3 -p
+
 import json
 from module import Module
 from sensor import Sensor
