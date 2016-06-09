@@ -14,6 +14,21 @@ Depending on your needs, you might want to install the following dependency in o
 pip install graypy
 ```
 
+Clone the repository in a target folder, e.g. /opt, and give ownership to the user whose identity will be used to run the program.
+
+## Running
+
+### Direct launch
+You can launch it by hand, in which case execute a Python3 interpreter targeting `main.py`.
+
+### Systemd service
+A skeleton of systemd service descriptor is provided under `yoctometeo-alerting.service`.
+You might want to edit the following parameters to suit your install :
+- User/Group : must match the aforementionned
+- WorkingDirectory/ExecStart : depending on the program path
+- StandardOutput/StandardOutput : where the outputs should be directed to, defaults to syslog
+
+
 ## Configuration
 
 The configuration is stored in a JSON-syntax file `config.json`. A sample skeleton may be found in the repository : `sample-config.json`.
