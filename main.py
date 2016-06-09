@@ -15,15 +15,24 @@ alerts = []
 
 with open('config.json') as config_file:
     config = json.load(config_file)
-    mail_config = config["mail-server"]
-    log_config = config["log-server"]
+    if 'mail-server' not in config:
+        print("Mail server config missing : e-mail alerts will be unavailable.")
+        mail_config = None
+    else:
+        mail_config = config["mail-server"]
+    if 'log-server' not in config:
+        print("Log server config missing : remote logging will be unavailable.")
+        log_config = None
+    else:
+        log_config = config["log-server"]
     sleep_time = config["sleep-time"]
     addressees = config["addressees"]
 
     logger = logging.getLogger('yoctometeo-alerting')
     logger.setLevel(logging.DEBUG)
-    handler = graypy.GELFHandler(log_config["host"], log_config["port"])
-    logger.addHandler(handler)
+    if log_config is not None:
+        handler = graypy.GELFHandler(log_config["host"], log_config["port"])
+        logger.addHandler(handler)
 
     for module in config["modules"]:
         obj_module = Module(json_config=module)

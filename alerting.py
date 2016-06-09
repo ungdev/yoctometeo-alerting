@@ -4,6 +4,8 @@ from email.mime.multipart import MIMEMultipart
 
 
 def send_mail(config, addressee, subject, body):
+    if config is None:
+        return 1
     msg = MIMEMultipart()
     msg['From'] = config["from-address"]
     msg['To'] = addressee
