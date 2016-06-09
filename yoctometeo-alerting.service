@@ -1,0 +1,12 @@
+[Unit]
+Description=Watch Yocto-Meteo devices and triggers alerts
+After=syslog.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/yoctometeo-alerting
+ExecStart=/opt/yoctometeo-alerting/main.py
+StandardOutput=syslog
+StandardError=syslog
