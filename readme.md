@@ -121,7 +121,7 @@ It must be defined with the following parameters :
 - An identifier to remain unique among the program instance
 - The vector used to transmit the alert (if a log server has been defined, each and every alert will be forwarded to it), currently supported :
     - E-mail
-    - SMS (coming soon)
+    - SMS (to be implemented depending on your platform)
 - The alert level (used for the logging system), to be chosed among the following, by increasing degree of harm :
     - warning
     - error
