@@ -85,7 +85,9 @@ This section defines the YoctoMeteo devices used by the program. Here are the di
 
 These objects define a module, as a hardware piece of equipment, with the following parameters :
 - The hardware ID, which can be found using YoctoPuce SDKs or demo softwares, it is used to uniquely identify a module.
-- The host on which the module is connected (localhost when connected to the very machine used to run the program)
+- The host identifier
+    - `[hostname]:[port]` for VirtualHub intallations
+    - `usb` for direct access through USB port (specific instructions to be found thereafter)
 - An array of sensor objects, whose description can be found in the next section
 
 ```
