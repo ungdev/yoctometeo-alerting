@@ -145,3 +145,8 @@ thus avoiding endless alert/end-of-alert messages when the value bounces arround
     "reset": 22
 }
 ```
+
+## Direct USB connection
+
+In order for USB access to work for users other than root, you should copy the file
+ `51-yoctopuce_all.rules` in the `/etc/udev/rules.d` directory.
