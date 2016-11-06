@@ -1,6 +1,6 @@
 [Unit]
 Description=Watch Yocto-Meteo devices and triggers alerts
-After=syslog.target
+After=syslog.target yvirtualhub.service
 
 [Service]
 Type=simple
