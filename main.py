@@ -72,6 +72,8 @@ while True:
         logger.info("Program operation report")
     except DisconnectedModuleException as dme:
         print(dme)
+    except Exception as e:
+        print(e)
     finally:
         with open("states.json", "w") as states_file_write:
             states_file_write.write(json.dumps(states))

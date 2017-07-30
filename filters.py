@@ -20,6 +20,9 @@ class ModuleFilter(logging.Filter):
             record.module = self.module.hwid
         except DisconnectedModuleException as dme:
             return True
+        except Exception as e:
+            record.exception = e.__repr__()
+            return True
 
         return True
 
@@ -34,10 +37,16 @@ class SensorFilter(logging.Filter):
             unit = self.sensor.get_unit()
         except DisconnectedModuleException as dme:
             return True
+        except Exception as e:
+            record.exception = e.__repr__()
+            return True
 
         try:
             value = self.sensor.get_value()
         except DisconnectedModuleException as dme:
+            return True
+        except Exception as e:
+            record.exception = e.__repr__()
             return True
 
         if self.sensor.type == "temperature":
